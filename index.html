@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f2e9da">
-  <meta name="description" content="滚动穿越流光实验室：从灵感花园进入生成中枢。">
-  <title>流光实验室 · 从灵感飞入生成</title>
+  <meta name="description" content="滚动穿越六幕 Agent 世界：从问题洞察、系统生成到企业生产交付。">
+  <title>刘师宇 · Agent 从灵感到生产</title>
   <link rel="icon" href="data:,">
   <style>
     :root, .sw-root {
@@ -55,18 +55,18 @@
   <a class="skip-link" href="#main">跳到主要内容</a>
   <div id="top" aria-hidden="true"></div>
   <main id="main">
-    <h1 class="sr-only">流光实验室：从灵感飞入生成</h1>
-    <div id="world" aria-label="两幕滚动影像：灵感花园与生成中枢"></div>
+    <h1 class="sr-only">刘师宇：Agent 从灵感到生产</h1>
+    <div id="world" aria-label="六幕滚动影像：从问题洞察到企业生产交付"></div>
     <noscript>请启用 JavaScript，体验滚动控制的沉浸式镜头。</noscript>
   </main>
 
   <script src="scrub-engine.js"></script>
   <script>
     mountScrollWorld(document.getElementById('world'), {
-      brand: { name: '流光实验室', href: '#top' },
-      hint: '滚动，进入世界',
-      diveScroll: 1.55,
-      connScroll: 1.15,
+      brand: { name: '刘师宇 · Agent 世界', href: '#top' },
+      hint: '滚动，进入 Agent 世界',
+      diveScroll: 1.45,
+      connScroll: 1.0,
       crossfade: 0.16,
       atmosphere: true,
       nav: true,
@@ -77,10 +77,10 @@
           still: 'assets/inspiration.webp',
           clip: 'assets/vid/inspiration.mp4',
           accent: '#56a889',
-          eyebrow: '01 · 捕捉',
-          title: '每个伟大作品，都从一束微光开始。',
-          body: '把零散念头放上桌面，让它们沿着同一条溪流，汇成清晰方向。',
-          tags: ['灵感采集', '概念共创', '方向对齐']
+          eyebrow: '01 · 发现',
+          title: '从真实问题，找到可交付方向。',
+          body: '走进业务现场，把零散诉求放上桌面，梳理成清晰目标与验证路径。',
+          tags: ['需求澄清', '业务共创', '方向对齐']
         },
         {
           id: 'generator',
@@ -88,16 +88,67 @@
           still: 'assets/generator.webp',
           clip: 'assets/vid/generator.mp4',
           accent: '#d8a84e',
-          eyebrow: '02 · 生成',
-          title: '让想象，长成可以抵达的世界。',
-          body: '创意进入生成核心，成为有节奏、有路径、可亲自穿越的数字体验。',
-          tags: ['MiniMax H3', '逐帧滚动', '沉浸叙事'],
+          eyebrow: '02 · 构建',
+          title: '让 Agent 从想法，长成完整系统。',
+          body: '把需求、工作流、工具调用与前后端实现装进同一条可靠生产链。',
+          tags: ['FastAPI', 'TypeScript', 'MCP']
+        },
+        {
+          id: 'runtime',
+          label: '运行沙盒',
+          still: 'assets/runtime.webp',
+          clip: 'assets/vid/runtime.mp4',
+          accent: '#56a889',
+          eyebrow: '03 · 运行',
+          title: '给每个 Agent，一个安全运行世界。',
+          body: '独立远程沙盒承载流式会话、归档恢复、人工接管、TTL 回收与费用可观测。',
+          tags: ['AgentBay', 'Runtime', 'Observability']
+        },
+        {
+          id: 'semantic',
+          label: '语义工坊',
+          still: 'assets/semantic.webp',
+          clip: 'assets/vid/semantic.mp4',
+          accent: '#3f8f75',
+          eyebrow: '04 · 语义',
+          title: '让企业数据，先变得可理解。',
+          body: '从 400 余张表中梳理核心语义，以 Benchmark、固定 SQL Skill 与白名单守住答案质量。',
+          tags: ['Ontology', 'SQL Skill', 'Benchmark']
+        },
+        {
+          id: 'delivery',
+          label: '交付中心',
+          still: 'assets/delivery.webp',
+          clip: 'assets/vid/delivery.mp4',
+          accent: '#d97941',
+          eyebrow: '05 · 交付',
+          title: '把工程结果，带到生产验收。',
+          body: '产品、工程、数据与客户共同闭环，从快速原型走到真实数据、生产上线和验收回款。',
+          tags: ['FDE', '生产上线', '客户验收']
+        },
+        {
+          id: 'launch',
+          label: '生产上线',
+          still: 'assets/launch.webp',
+          clip: 'assets/vid/launch.mp4',
+          accent: '#d8a84e',
+          eyebrow: '06 · 上线',
+          title: 'Agent 的终点，是业务真正开始使用。',
+          body: '连接真实系统、真实用户与持续迭代，让 AI 从演示走进规模化生产。',
+          tags: ['真实业务', '规模推广', '持续迭代'],
           cta: {
-            primary: { label: '再飞一次', href: '#top' }
+            primary: { label: '联系我', href: 'mailto:1069767292@qq.com' },
+            secondary: { label: 'GitHub', href: 'https://github.com/liush2yuxjtu' }
           }
         }
       ],
-      connectors: ['assets/vid/conn1.mp4']
+      connectors: [
+        'assets/vid/conn1.mp4',
+        'assets/vid/conn2.mp4',
+        'assets/vid/conn3.mp4',
+        'assets/vid/conn4.mp4',
+        'assets/vid/conn5.mp4'
+      ]
     });
   </script>
 </body>

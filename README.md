@@ -1,6 +1,6 @@
 # Scroll World · MiniMax H3
 
-Two-scene, scroll-scrubbed camera journey generated with MiniMax H3.
+Six-scene, eleven-clip scroll-scrubbed camera journey generated with MiniMax H3. It follows an Agent from problem discovery through runtime, enterprise data semantics, delivery, and production launch.
 
 **Live:** https://liush2yuxjtu.github.io/scroll-world-minimax-demo/
 
