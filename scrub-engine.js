@@ -143,7 +143,7 @@ function mountScrollWorld(container, config) {
     if (poster) img.src = poster;
     scene.appendChild(img); stage.appendChild(scene);
     s.el = scene; s.img = img; s.video = null; s.hasClip = false;
-    s.loading = false; s.ready = false; s.cur = 0; s.target = 0; s.visible = false;
+    s.loading = false; s.ready = false; s.cur = 0; s.target = 0; s.visible = false; s.nextSeekAt = 0;
   });
 
   // per-section copy / route / nav
@@ -237,8 +237,14 @@ function mountScrollWorld(container, config) {
       s.el.style.opacity = op; s.visible = op > 0.001;
       s.el.style.zIndex = (i === ci) ? '120' : String(100 + Math.round(op * 10));
       if (!s.hasClip || !s.ready) {
-        const sc = reduce ? 1 : 1.03 + local * 0.14;
-        s.img.style.transform = `translateX(${stageX - 2}vw) scale(${sc.toFixed(3)})`;
+        if (s.clip) {
+          // The still is the video's first-frame poster. Keep identical framing so
+          // handing off to decoded video cannot jump or flash at a different scale.
+          s.img.style.transform = 'none';
+        } else {
+          const sc = reduce ? 1 : 1.03 + local * 0.14;
+          s.img.style.transform = `translateX(${stageX - 2}vw) scale(${sc.toFixed(3)})`;
+        }
       }
     }
 
@@ -271,20 +277,26 @@ function mountScrollWorld(container, config) {
     ticking = false;
   }
 
-  function raf() {
-    const eps = isMobile() ? 0.02 : 0.008;   // coarser seek step on phones = fewer decodes
+  function raf(now = 0) {
+    const mobile = isMobile();
+    const eps = mobile ? 0.02 : 0.012;
+    const minSeekGap = mobile ? 80 : 50;
     for (let i = 0; i < NSEG; i++) {
       const s = SEGMENTS[i];
       if (!s.hasClip || !s.ready || !s.video) continue;
-      // Never queue a seek while the decoder is still resolving the last one.
-      // On phones a fast flick would otherwise pile up seeks and freeze the clip;
-      // cur keeps lerping, so we snap to the latest target the moment it's free.
-      if (s.video.seeking) continue;
-      if (!s.visible && Math.abs(s.cur - s.target) < 0.002) continue;
-      s.cur += (s.target - s.cur) * (reduce ? 1 : 0.18);
+      // Hidden clips do not need to chase their old timeline position. Sync the
+      // logical cursor and decode only after the scene becomes visible again.
+      if (!s.visible) { s.cur = s.target; continue; }
+      // Coalesce wheel bursts into the latest requested frame. The old lerp issued
+      // dozens of intermediate seeks after every wheel event, making the decoder
+      // oscillate between stale frames and causing visible scroll jitter.
+      if (s.video.seeking || now < s.nextSeekAt) continue;
+      s.cur = s.target;
       const dur = s.video.duration || 1;
       const t = clamp(s.cur, 0, 0.999) * dur;
-      if (Math.abs(s.video.currentTime - t) > eps) { try { s.video.currentTime = t; } catch (e) {} }
+      if (Math.abs(s.video.currentTime - t) > eps) {
+        try { s.video.currentTime = t; s.nextSeekAt = now + minSeekGap; } catch (e) {}
+      }
     }
     requestAnimationFrame(raf);
   }
@@ -384,7 +396,10 @@ function injectCSS() {
   .sw-stage{position:fixed;inset:0;z-index:10;pointer-events:none;}
   .sw-scene{position:absolute;inset:0;opacity:0;overflow:hidden;will-change:opacity;}
   .sw-scene__video,.sw-scene__still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;}
-  .sw-scene__still{will-change:transform;} .sw-scene.has-clip .sw-scene__still{opacity:0;} .sw-scene__video{z-index:1;}
+  .sw-scene__still{z-index:1;will-change:transform,opacity;transition:opacity 120ms ease-out;}
+  .sw-scene__video{z-index:2;opacity:0;transition:opacity 120ms ease-out;}
+  .sw-scene.has-clip .sw-scene__still{opacity:0;}
+  .sw-scene.has-clip .sw-scene__video{opacity:1;}
   .sw-copylayer{position:fixed;inset:0;z-index:20;pointer-events:none;}
   .sw-copylayer::before{content:"";position:absolute;inset:0;width:min(58vw,780px);background:linear-gradient(90deg,var(--sw-bg) 0%,color-mix(in srgb,var(--sw-bg) 82%,transparent) 34%,color-mix(in srgb,var(--sw-bg) 40%,transparent) 62%,transparent 100%);}
   .sw-copy{position:absolute;left:clamp(18px,5vw,64px);top:50%;transform:translateY(-50%);width:min(42vw,460px);opacity:0;will-change:opacity,transform;}
